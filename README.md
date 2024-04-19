@@ -1,5 +1,7 @@
 ### Auto-Deploy Script for React Application
 
+![](/assets/vid.mkv)
+
 This script automates the deployment process of a Node.js application by monitoring a Git repository for changes and rebuilding the app when new commits are detected.
 
 ### Prerequisites
