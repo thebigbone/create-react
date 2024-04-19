@@ -10,7 +10,7 @@ This script automates the deployment process of a Node.js application by monitor
 
 ### Local Usage
 
-1. Run the script with the repository URL as the first argument: `./auto-deploy.sh <repo_url>`
+1. Run the script with the repository URL as the first argument: `./monitor.sh <repo_url>`
 2. Enter the time period (in seconds) for detecting changes.
 
 The script will clone or update the repository, install dependencies, build the application, and serve it at <http://localhost:3000>. Whenever changes are detected in the repository, the script will pull the latest commits, rebuild the app, and restart the server.
