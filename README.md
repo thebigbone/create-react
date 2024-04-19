@@ -1,6 +1,6 @@
 ### Auto-Deploy Script for React Application
 
-[Demo](https://github.com/thebigbone/create-react/blob/main/assets/vid.mkv)
+![Demo](https://github.com/thebigbone/create-react/blob/main/assets/vid.mkv)
 
 This script automates the deployment process of a Node.js application by monitoring a Git repository for changes and rebuilding the app when new commits are detected.
 
