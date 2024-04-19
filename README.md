@@ -1,8 +1,6 @@
 ### Auto-Deploy Script for React Application
 
-<video controls>
-  <source src="assets/vid.mkv" type="video/mp4">
-</video>
+[Video Demo](assets/vid.mkv)
 
 This script automates the deployment process of a Node.js application by monitoring a Git repository for changes and rebuilding the app when new commits are detected.
 
