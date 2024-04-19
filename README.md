@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+### Auto-Deploy Script for React Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This script automates the deployment process of a Node.js application by monitoring a Git repository for changes and rebuilding the app when new commits are detected.
 
-## Available Scripts
+### Prerequisites
 
-In the project directory, you can run:
+- Git
+- Node.js with npm
+- inotify-tools (for Linux systems)
 
-### `npm start`
+### Local Usage
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Run the script with the repository URL as the first argument: `./auto-deploy.sh <repo_url>`
+2. Enter the time period (in seconds) for detecting changes.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The script will clone or update the repository, install dependencies, build the application, and serve it at <http://localhost:3000>. Whenever changes are detected in the repository, the script will pull the latest commits, rebuild the app, and restart the server.
 
-### `npm test`
+### Error Handling
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The script includes error handling for the following scenarios:
 
-### `npm run build`
+- Missing repository URL
+- Failed repository cloning or updating
+- Failed dependency installation
+- Failed build process
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+In case of an error, the script will display an error message and either exit or continue monitoring, depending on the error.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### File Watcher
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The script uses `inotifywait` to monitor the repository for changes. It watches for file modifications, moves, creations, and deletions, and triggers a rebuild when any of these events occur.
 
-### `npm run eject`
+### Serving the Application
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The script serves the application using the `serve` package. The server process runs in the background, allowing the script to continue monitoring for changes. When a new build is triggered, the script kills the existing server process and starts a new one.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Build docker image
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+docker build -t react-app:1.0 .
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Run the container
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+docker run --rm -it -p 3000:3000 react-app:1.0 /bin/bash monitor.sh https://github.com/thebigbone/create-react.git
+```
